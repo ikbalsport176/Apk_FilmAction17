@@ -14,21 +14,27 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.aplikasi_reviewfilm.AddMovie.MovieModel;
 import com.example.aplikasi_reviewfilm.adapter.AdapterListSimple;
+import com.example.aplikasi_reviewfilm.genre.GenreModel;
 import com.example.aplikasi_reviewfilm.movieshow.ShowModel;
+import com.example.aplikasi_reviewfilm.rating.RatingModel;
 import com.example.aplikasi_reviewfilm.service.APIClient;
 import com.example.aplikasi_reviewfilm.service.APIInterfacesRest;
 
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -42,6 +48,7 @@ public class Add_Movie extends AppCompatActivity {
     ImageButton img_btn1,img_btn2,img_btn3;
     EditText txt_Judul,txt_Directby,txt_Writenby,txt_Studio;
     Button button_Send;
+    Spinner spn_Rating,spn_Genre;
 
 
 
@@ -50,15 +57,21 @@ public class Add_Movie extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add__movie);
 
+        //Button
         img_btn1 = findViewById(R.id.img_btn1);
         img_btn2 = findViewById(R.id.img_btn2);
         img_btn3 = findViewById(R.id.img_btn3);
         button_Send = findViewById(R.id.button_Send);
 
+        //Edittext
         txt_Judul = findViewById(R.id.txt_Judul);
         txt_Directby = findViewById(R.id.txt_Directby);
         txt_Writenby = findViewById(R.id.txt_Writenby);
         txt_Studio =findViewById(R.id.txt_Studio);
+
+        //Spinner
+        spn_Rating = findViewById(R.id.spn_Rating);
+        spn_Genre = findViewById(R.id.spn_Genre);
 
         img_btn1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,6 +95,8 @@ public class Add_Movie extends AppCompatActivity {
         });
 
 
+spinerRating();
+spinnerGenres();
 
     }
 
@@ -162,14 +177,14 @@ public class Add_Movie extends AppCompatActivity {
 
     public Uri fileUri;
    // private int CAMERA_REQUEST = 100;
-   // private int CAMERA_REQUEST2 = 200;
+    //private int CAMERA_REQUEST2 = 200;
    // private int CAMERA_REQUEST3 = 300;
 
     private int REQUEST_GALLERY = 100;
     private int REQUEST_GALLERY2 = 200;
     private int REQUEST_GALLERY3 = 300;
-
-  /*  void openCamera() {
+/*
+   void openCamera() {
 
         Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(cameraIntent, CAMERA_REQUEST);
@@ -189,8 +204,8 @@ public class Add_Movie extends AppCompatActivity {
         startActivityForResult(cameraIntent, CAMERA_REQUEST3);
 
     }
-*/
 
+*/
 
     public void openFolder1() {
 
@@ -217,7 +232,7 @@ public class Add_Movie extends AppCompatActivity {
 
 
     Bitmap bitmap;
-    byte[] byteArray;
+    byte[] byteArray,byteArray2,byteArray3;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -241,7 +256,7 @@ public class Add_Movie extends AppCompatActivity {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.JPEG, 70, baos);
             byteArray = baos.toByteArray();
-            // img_btn1.setImageBitmap(bitmap);
+            // img_btn2.setImageBitmap(bitmap);
 
     }else  if (requestCode == REQUEST_GALLERY3 && resultCode == Activity.RESULT_OK) {
             Uri selectedImage = data.getData();
@@ -251,8 +266,105 @@ public class Add_Movie extends AppCompatActivity {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.JPEG, 70, baos);
             byteArray = baos.toByteArray();
-            // img_btn1.setImageBitmap(bitmap);
+            // img_btn3.setImageBitmap(bitmap);
 
         }
     }
+
+    public void spinerRating(){
+
+        apiInterface = APIClient.getClient().create(APIInterfacesRest.class);
+        /*progressDialog = new ProgressDialog(AddActivity.this);
+        progressDialog.setTitle("Loading");
+        progressDialog.show();*/
+        Call<RatingModel> call3 = apiInterface.getRating();
+        call3.enqueue(new Callback<RatingModel>() {
+            @Override
+            public void onResponse(Call<RatingModel> call, Response<RatingModel> response) {
+                //progressDialog.dismiss();
+                RatingModel data = response.body();
+                //Toast.makeText(LoginActivity.this,userList.getToken().toString(),Toast.LENGTH_LONG).show();
+                if (data !=null) {
+
+
+                    List<String> listSpinner = new ArrayList<String>();
+                    for (int i = 0; i < data.getData().getRating().size(); i++){
+                        listSpinner.add(data.getData().getRating().get(i).getRating());
+                    }
+
+                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(Add_Movie.this,
+                            android.R.layout.simple_spinner_item, listSpinner);
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spn_Rating.setAdapter(adapter);
+
+                }else{
+
+                    try {
+                        JSONObject jObjError = new JSONObject(response.errorBody().string());
+                        Toast.makeText(Add_Movie.this, jObjError.getString("message"), Toast.LENGTH_LONG).show();
+                    } catch (Exception e) {
+                        Toast.makeText(Add_Movie.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<RatingModel> call, Throwable t) {
+                //progressDialog.dismiss();
+                Toast.makeText(getApplicationContext(),"Maaf koneksi bermasalah",Toast.LENGTH_LONG).show();
+                call.cancel();
+            }
+        });}
+
+    public void spinnerGenres(){
+
+        apiInterface = APIClient.getClient().create(APIInterfacesRest.class);
+        /*progressDialog = new ProgressDialog(AddActivity.this);
+        progressDialog.setTitle("Loading");
+        progressDialog.show();*/
+        Call<GenreModel> call3 = apiInterface.getGenre();
+        call3.enqueue(new Callback<GenreModel>() {
+            @Override
+            public void onResponse(Call<GenreModel> call, Response<GenreModel> response) {
+                // progressDialog.dismiss();
+                GenreModel data = response.body();
+                //Toast.makeText(LoginActivity.this,userList.getToken().toString(),Toast.LENGTH_LONG).show();
+                if (data !=null) {
+
+
+                    List<String> listSpinner = new ArrayList<String>();
+                    for (int i = 0; i < data.getData().getGenre().size(); i++){
+                        listSpinner.add(data.getData().getGenre().get(i).getGenre());
+                    }
+
+                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(Add_Movie.this,
+                            android.R.layout.simple_spinner_item, listSpinner);
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spn_Genre.setAdapter(adapter);
+
+
+
+
+
+                }else{
+
+                    try {
+                        JSONObject jObjError = new JSONObject(response.errorBody().string());
+                        Toast.makeText(Add_Movie.this, jObjError.getString("message"), Toast.LENGTH_LONG).show();
+                    } catch (Exception e) {
+                        Toast.makeText(Add_Movie.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<GenreModel> call, Throwable t) {
+                // progressDialog.dismiss();
+                Toast.makeText(getApplicationContext(),"Maaf koneksi bermasalah",Toast.LENGTH_LONG).show();
+                call.cancel();
+            }
+        });}
+
 }
