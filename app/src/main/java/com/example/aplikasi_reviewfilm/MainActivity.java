@@ -6,7 +6,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.aplikasi_reviewfilm.adapter.AdapterListSimple;
@@ -23,14 +27,25 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity {
 
     RecyclerView lst_Movie;
+    TextView txt_Cari;
+    ImageButton btn_ImgCari;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         lst_Movie = findViewById(R.id.lst_Movie);
+        txt_Cari = findViewById(R.id.txt_Cari);
+        btn_ImgCari = findViewById(R.id.btn_ImgCari);
 
 
+        btn_ImgCari.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this,Add_Movie.class);
+                startActivity(intent);
+            }
+        });
 
 
         callMovielst();
@@ -54,16 +69,11 @@ public class MainActivity extends AppCompatActivity {
                 //Toast.makeText(LoginActivity.this,userList.getToken().toString(),Toast.LENGTH_LONG).show();
                 if (data !=null) {
 
-
                     AdapterListSimple adapter = new AdapterListSimple(MainActivity.this,data.getData().getMoviedb());
 
                     lst_Movie.setLayoutManager(new LinearLayoutManager(MainActivity.this));
                     lst_Movie.setItemAnimator(new DefaultItemAnimator());
                     lst_Movie.setAdapter(adapter);
-
-
-
-
 
                 }else{
 
@@ -74,7 +84,6 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 }
-
             }
 
             @Override
