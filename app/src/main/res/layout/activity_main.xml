@@ -14,7 +14,7 @@
 
         <EditText
             android:id="@+id/txt_Cari"
-            android:layout_width="350dp"
+            android:layout_width="315dp"
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPersonName" />
