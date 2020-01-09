@@ -55,17 +55,17 @@ public class Add_Movie extends AppCompatActivity {
         img_btn1 = findViewById(R.id.img_btn1);
         img_btn2 = findViewById(R.id.img_btn2);
         img_btn3 = findViewById(R.id.img_btn3);
-        button_Send = findViewById(R.id.button_Send);
+        button_Send = findViewById(R.id.buttonSend);
 
         //Edittext
-        txt_Judul = findViewById(R.id.txt_Judul);
-        txt_Directby = findViewById(R.id.txt_Directby);
-        txt_Writenby = findViewById(R.id.txt_Writenby);
-        txt_Studio =findViewById(R.id.txt_Studio);
+        txt_Judul = findViewById(R.id.txtJudul);
+        txt_Directby = findViewById(R.id.txtDirectby);
+        txt_Writenby = findViewById(R.id.txtWritenby);
+        txt_Studio =findViewById(R.id.txtStudio);
 
         //Spinner
-        spn_Rating = findViewById(R.id.spn_Rating);
-        spn_Genre = findViewById(R.id.spn_Genre);
+        spn_Rating = findViewById(R.id.spnRating);
+        spn_Genre = findViewById(R.id.spnGenre);
 
         img_btn1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,6 +85,30 @@ public class Add_Movie extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 openFolder3();
+            }
+        });
+
+
+        
+        button_Send.setOnClickListener(new View.OnClickListener() {
+            private String KEY_NAME = "NAMA";
+            @Override
+            public void onClick(View v) {
+                try{
+                    String send = button_Send.getText().toString();
+                    if (send != null && send != ""){
+                        Intent i = new Intent(Add_Movie.this, MainActivity.class);
+                        i.putExtra(KEY_NAME, send);
+                        startActivity(i);
+
+                    } else {
+                        Toast.makeText(getApplication(), "YOU NEED TO FILL YOUR SEND",Toast.LENGTH_SHORT);
+                    }
+
+                } catch (Exception e){
+                    e.printStackTrace();
+                    Toast.makeText(getApplication(), "ERROR, TRY AGAIN !",Toast.LENGTH_SHORT);
+                }
             }
         });
 
@@ -156,6 +180,7 @@ spinnerGenres();
                 }
 
             }
+
 
             @Override
             public void onFailure(Call<MovieModel> call, Throwable t) {

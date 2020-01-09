@@ -75,11 +75,11 @@ public class AdapterListSimple extends RecyclerView.Adapter<AdapterListSimple.Vi
 
             super(itemView);
 
-           txt_Judul = (TextView) itemView.findViewById(R.id.txt_Judul);
-           txt_Rating = (TextView) itemView.findViewById(R.id.txt_Rating);
-           txt_Genre = (TextView) itemView.findViewById(R.id.txt_Genre);
-           txt_Direct = (TextView) itemView.findViewById(R.id.txt_Direct);
-           txt_Theater = (TextView) itemView.findViewById(R.id.txt_Theater);
+           txt_Judul = (TextView) itemView.findViewById(R.id.txtJudul);
+           txt_Rating = (TextView) itemView.findViewById(R.id.txtRating);
+           txt_Genre = (TextView) itemView.findViewById(R.id.txtGenre);
+           txt_Direct = (TextView) itemView.findViewById(R.id.txtDirect);
+           txt_Theater = (TextView) itemView.findViewById(R.id.txtTheater);
 
            img_Film = (ImageView)itemView.findViewById(R.id.img_Film);
 

@@ -13,14 +13,14 @@
         android:orientation="horizontal">
 
         <EditText
-            android:id="@+id/txt_Cari"
+            android:id="@+id/txtCari"
             android:layout_width="315dp"
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPersonName" />
 
         <ImageButton
-            android:id="@+id/btn_ImgCari"
+            android:id="@+id/btnImgCari"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:paddingRight="10dp"
@@ -30,7 +30,7 @@
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/lst_Movie"
+        android:id="@+id/lst_Action"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

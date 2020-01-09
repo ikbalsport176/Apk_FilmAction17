@@ -29,7 +29,7 @@
                 android:text="Judul Film" />
 
             <EditText
-                android:id="@+id/txt_Judul"
+                android:id="@+id/txtJudul"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -42,7 +42,7 @@
                 android:text="Rating" />
 
             <Spinner
-                android:id="@+id/spn_Rating"
+                android:id="@+id/spnRating"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -53,7 +53,7 @@
                 android:text="Genre" />
 
             <Spinner
-                android:id="@+id/spn_Genre"
+                android:id="@+id/spnGenre"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -64,7 +64,7 @@
                 android:text="Direct By" />
 
             <EditText
-                android:id="@+id/txt_Directby"
+                android:id="@+id/txtDirectby"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -77,7 +77,7 @@
                 android:text="Writen By" />
 
             <EditText
-                android:id="@+id/txt_Writenby"
+                android:id="@+id/txtWritenby"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -98,13 +98,25 @@
                 android:textSize="24sp" />
 
             <CalendarView
-                android:id="@+id/c_Intheater"
+                android:id="@+id/cbIntheater"
                 android:layout_width="300dp"
                 android:layout_height="300dp"
                 android:layout_weight="1" />
         </LinearLayout>
 
-        <LinearLayout
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/btnDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Date" />
+            </LinearLayout>
+
+            <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
@@ -117,7 +129,7 @@
                 android:textSize="14sp" />
 
             <EditText
-                android:id="@+id/txt_Studio"
+                android:id="@+id/txtStudio"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -171,9 +183,10 @@
                 android:layout_height="wrap_content" />
 
             <Button
-                android:id="@+id/button_Send"
+                android:id="@+id/buttonSend"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="300dp"
                 android:text="Send" />
         </LinearLayout>
         </LinearLayout>

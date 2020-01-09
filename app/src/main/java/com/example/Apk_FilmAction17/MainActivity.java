@@ -34,9 +34,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        lst_Movie = findViewById(R.id.lst_Movie);
-        txt_Cari = findViewById(R.id.txt_Cari);
-        btn_ImgCari = findViewById(R.id.btn_ImgCari);
+        lst_Movie = findViewById(R.id.lst_Action);
+        txt_Cari = findViewById(R.id.txtCari);
+        btn_ImgCari = findViewById(R.id.btnImgCari);
 
 
         btn_ImgCari.setOnClickListener(new View.OnClickListener() {
