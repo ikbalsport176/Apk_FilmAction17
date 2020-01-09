@@ -1,5 +1,6 @@
 package com.example.Apk_FilmAction17;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -13,6 +14,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
@@ -27,7 +29,10 @@ import com.example.Apk_FilmAction17.service.APIInterfacesRest;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import okhttp3.MediaType;
@@ -41,9 +46,10 @@ public class Add_Movie extends AppCompatActivity {
 
     ImageButton img_btn1,img_btn2,img_btn3;
     EditText txt_Judul,txt_Directby,txt_Writenby,txt_Studio;
-    Button button_Send;
+    Button button_Send, button_date;
     Spinner spn_Rating,spn_Genre;
-
+    CalendarView calendarView;
+    Date tanggal;
 
 
     @Override
@@ -66,6 +72,7 @@ public class Add_Movie extends AppCompatActivity {
         //Spinner
         spn_Rating = findViewById(R.id.spnRating);
         spn_Genre = findViewById(R.id.spnGenre);
+        calendarView = findViewById(R.id.cbIntheater);
 
         img_btn1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,28 +96,26 @@ public class Add_Movie extends AppCompatActivity {
         });
 
 
-
-        button_Send.setOnClickListener(new View.OnClickListener() {
-            private String KEY_NAME = "NAMA";
+        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
-            public void onClick(View v) {
-                try{
-                    String send = button_Send.getText().toString();
-                    if (send != null && send != ""){
-                        Intent i = new Intent(Add_Movie.this, MainActivity.class);
-                        i.putExtra(KEY_NAME, send);
-                        startActivity(i);
-
-                    } else {
-                        Toast.makeText(getApplication(), "YOU NEED TO FILL YOUR SEND",Toast.LENGTH_SHORT);
-                    }
-
-                } catch (Exception e){
-                    e.printStackTrace();
-                    Toast.makeText(getApplication(), "ERROR, TRY AGAIN !",Toast.LENGTH_SHORT);
-                }
+            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
+                tanggal = new GregorianCalendar(year, month, dayOfMonth).getTime();
             }
         });
+
+
+        button_Send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                String tanggalnya = formatter.format(tanggal);
+                // Toast.makeText(AddMovie.this,tanggalnya,Toast.LENGTH_LONG).show();
+                //addmovie(txt_Judul.getText().toString(),txt_Directby.getText().toString(),tanggalnya,spn_Rating.getSelectedItem().toString(),spn_Genre.getSelectedItem().toString(),txt_Writenby.getText().toString(),txt_Studio.getText().toString(),"img_btn1","img_btn2","img_btn3");
+                addmovie(txt_Judul.getText().toString(),spn_Rating.getSelectedItem().toString(),spn_Genre.getSelectedItem().toString(),txt_Directby.getText().toString(),txt_Writenby.getText().toString(),tanggalnya,txt_Studio.getText().toString(),"img_btn1","img_btn2","img_btn3");
+            }
+        });
+
+
 
 
 spinerRating();
@@ -131,7 +136,7 @@ spinnerGenres();
         return body;
     }
 
-    public void addmovie (String judul,String rating,String genre,String directedby,String writenby,String intheater,String studio){
+    public void addmovie(String judul, String rating, String genre, String directedby, String writenby, String intheater, String studio, String img_btn1,String img_btn2,String img_btn3){
 
         RequestBody requestFile = RequestBody.create(MediaType.parse("image/jpeg"),byteArray);
         MultipartBody.Part bodyImg1 = MultipartBody.Part.createFormData("photo", "dewa.png", requestFile);
